@@ -27,7 +27,7 @@ def val(model,test,vocab,device):
     """
     model.eval()
 
-    print "\nValidating.."
+    print("\nValidating..")
 
     if not vis is None:
         visdom_windows = None
@@ -41,7 +41,7 @@ def val(model,test,vocab,device):
             model_out = model(b.text[0].to(device)).to("cpu").numpy()
             correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
             total += b.label.size(0)
-        print "{}%, {}/{}".format(correct / total,correct,total)
+        print("{}%, {}/{}".format(correct / total,correct,total))
 
 def train(max_length,model_size,
             epochs,learning_rate,
@@ -64,7 +64,7 @@ def train(max_length,model_size,
     criterion = nn.CrossEntropyLoss()
 
     
-    for i in xrange(0,epochs+1):
+    for i in range(0,epochs+1):
         loss_sum = 0.0
         model.train()
         for j,b in enumerate(iter(tqdm(train))):
@@ -74,7 +74,7 @@ def train(max_length,model_size,
             loss.backward()
             optimizer.step()
             loss_sum += loss.item()
-        print "Epoch: {}, Loss mean: {}\n".format(i,j,loss_sum / j)
+        print("Epoch: {}, Loss mean: {}\n".format(i,j,loss_sum / j))
 
         # Validate on test-set every epoch
         val(model,test,vocab,device)
