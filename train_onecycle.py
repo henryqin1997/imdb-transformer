@@ -37,7 +37,7 @@ ap.add_argument("--train_word_embeddings", type=bool, default=True, dest="train_
 
 ap.add_argument("--batch_size", type=int, default=128, help="Batch size")
 
-ap.add_argument("--exp-rt",action='store_ture', help="use exp-rt to see lr range")
+ap.add_argument("--exp-rt",action='store_true', help="use exp-rt to see lr range")
 
 ap.add_argument("--onecycle",action='store_true')
 
