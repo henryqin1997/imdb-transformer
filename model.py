@@ -93,7 +93,7 @@ class Transformer(nn.Module):
 
         self.blocks = nn.Sequential(
                 *[Block(input_size,hidden_size,num_heads,activation,dropout=dropout) 
-                    for _ in xrange(num_blocks)]
+                    for _ in range(num_blocks)]
             )
 
     def forward(self,x):
