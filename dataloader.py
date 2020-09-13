@@ -58,11 +58,11 @@ if __name__ == "__main__":
     """
     train, test, vectors, vocab = get_imdb(1,50)
     from collections import Counter
-    print list(enumerate(vocab.itos[:100]))
+    print(list(enumerate(vocab.itos[:100])))
     cnt = Counter()
     for i,b in enumerate(iter(train)):
         if i > 2: break
-        print i,num2words(vocab,b.text[0][0].numpy())
+        print(i,num2words(vocab,b.text[0][0].numpy()))
         cnt[b.label[0].item()] += 1
-    print cnt
+    print(cnt)
 
