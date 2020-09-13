@@ -146,4 +146,4 @@ if __name__ == "__main__":
 
     input = Variable(torch.rand(40,20,10))
 
-    print t(input)
+    print(t(input))

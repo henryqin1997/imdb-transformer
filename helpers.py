@@ -5,7 +5,7 @@ def plot_weights(model,windows,b,vocab,vis):
     try:
         weights = model.transformer.blocks[0].attention.weights.to("cpu").numpy()
     except AttributeError:
-        print "No weights yet"
+        print("No weights yet")
         return None
     idx = 1
     text,dims = b.text[0], b.text[1]
