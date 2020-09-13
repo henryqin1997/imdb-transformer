@@ -6,6 +6,7 @@ from novograd import NovoGrad
 import math
 from model import Net
 import argparse
+import json
 
 ap = argparse.ArgumentParser(description="Train a Transformer network for sentiment analysis")
 
@@ -141,5 +142,7 @@ def train(max_length, model_size,
 if __name__ == "__main__":
     train(**arg_pass)
 
+    postfix = '_exp-rt.json' if args.exp_rt else ('onecycle.json' if args.onecycle else '.json')
+    json.dump(loss_list,open('imdb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix),'w+')
 
 
