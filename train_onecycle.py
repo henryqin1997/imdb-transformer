@@ -21,8 +21,6 @@ ap.add_argument("--epochs", default=1000, type=int, help="Number of epochs to tr
 ap.add_argument("--learning_rate", default=0.001, type=float, dest="learning_rate",
                 help="Learning rate for optimizer")
 
-ap.add_argument("--device", default="cuda:0", dest="device", help="Device to use for training \
-                                                                and evaluation e.g. (cpu, cuda:0)")
 ap.add_argument("--num_heads", default=4, type=int, dest="num_heads", help="Number of attention heads in \
                                                                 the Transformer network")
 
@@ -44,6 +42,8 @@ ap.add_argument("--onecycle",action='store_true')
 args = ap.parse_args()
 
 arg_pass = vars(args)
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 loss_list = []
 
@@ -96,7 +96,7 @@ def lrs(batch):
 
 def train(max_length, model_size,
           epochs, learning_rate,
-          device, num_heads, num_blocks,
+          num_heads, num_blocks,
           dropout, train_word_embeddings,
           batch_size,exp_rt,onecycle):
     """
