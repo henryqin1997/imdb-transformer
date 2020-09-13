@@ -7,4 +7,4 @@ def get_pos_onehot(length):
     return onehot
 
 if __name__ == "__main__":
-    print get_pos_onehot(3)
+    print(get_pos_onehot(3))
