@@ -121,7 +121,7 @@ def train(max_length, model_size,
         lr_scheduler = optim.lr_scheduler.OneCycleLR(optimizer,args.learning_rate,steps_per_epoch=len(tqdm(train)),
                                                    epochs=args.epochs)
 
-    for i in range(0, epochs + 1):
+    for i in range(epochs):
         loss_sum = 0.0
         model.train()
         for j, b in enumerate(iter(tqdm(train))):
