@@ -15,7 +15,7 @@ class MultiHeadAttention(nn.Module):
         self.hidden_size = hidden_size
         self.num_heads = num_heads
 
-        self.head_size = self.hidden_size / num_heads
+        self.head_size = self.hidden_size // num_heads
 
         self.q_linear = nn.Linear(self.input_size,self.hidden_size)
         self.k_linear = nn.Linear(self.input_size,self.hidden_size)
