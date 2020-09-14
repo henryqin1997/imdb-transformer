@@ -146,6 +146,6 @@ if __name__ == "__main__":
     train(**arg_pass)
 
     postfix = '_exp-rt.json' if args.exp_rt else ('onecycle.json' if args.onecycle else '.json')
-    json.dump(loss_list,open('imdb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix),'w+')
+    json.dump(loss_list,open('imdb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix,'w+'))
 
 
