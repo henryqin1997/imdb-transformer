@@ -89,10 +89,6 @@ def val(model, test, vocab, device):
             total += b.label.size(0)
         print("{}%, {}/{}".format(correct / total, correct, total))
 
-def lrs(batch):
-    low = math.log2(1e-5)
-    high = math.log2(10)
-    return 2 ** (low + (high - low) * batch / len(tqdm(train)) / args.epochs)
 
 def train(max_length, model_size,
           epochs, learning_rate,
@@ -113,6 +109,12 @@ def train(max_length, model_size,
 
     optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
+
+    def lrs(batch):
+        low = math.log2(1e-5)
+        high = math.log2(10)
+        return 2 ** (low + (high - low) * batch / len(tqdm(train)) / args.epochs)
+
     if exp_rt:
         lr_scheduler = optim.lr_scheduler.LambdaLR(optimizer,lrs)
     elif args.onecycle:
