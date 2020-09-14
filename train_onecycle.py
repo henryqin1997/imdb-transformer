@@ -133,6 +133,8 @@ def train(max_length, model_size,
             optimizer.step()
             if exp_rt or args.onecycle:
                 lr_scheduler.step()
+                print('lr',lr_scheduler.get_last_lr())
+                print('loss:',loss.item())
             loss_sum += loss.item()
             loss_list.append(loss.item())
         print("Epoch: {}, Loss mean: {}\n".format(i, j, loss_sum / j))
