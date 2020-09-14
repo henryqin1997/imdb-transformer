@@ -3,6 +3,7 @@ from torch import optim
 from torch import nn
 from dataloader import get_imdb
 from model import Net
+import json
 
 try:
     # try to import tqdm for progress updates
@@ -13,6 +14,7 @@ except ImportError:
         return x
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+vacc = []
 
 try:
     # try to import visdom for visualisation of attention weights
@@ -44,6 +46,7 @@ def val(model,test,vocab,device):
             correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
             total += b.label.size(0)
         print("{}%, {}/{}".format(correct / total,correct,total))
+        vacc.append(correct/total)
 
 def train(max_length,model_size,
             epochs,learning_rate,
@@ -110,5 +113,6 @@ if __name__ == "__main__":
 
     train(**args)
 
+    json.dump(vacc,open('original.json','w+'))
 
 

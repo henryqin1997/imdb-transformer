@@ -46,7 +46,8 @@ arg_pass = vars(args)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 loss_list = []
-
+tacc = []
+vacc = []
 
 try:
     # try to import tqdm for progress updates
@@ -88,6 +89,7 @@ def val(model, test, vocab, device):
             correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
             total += b.label.size(0)
         print("{}%, {}/{}".format(correct / total, correct, total))
+        vacc.append(correct/total)
 
 
 def train(max_length, model_size,
@@ -138,6 +140,7 @@ def train(max_length, model_size,
             loss_sum += loss.item()
             loss_list.append(loss.item())
         print("Epoch: {}, Loss mean: {}\n".format(i, j, loss_sum / j))
+        tacc.append(loss_sum/j)
 
         # Validate on test-set every epoch
         if not exp_rt:
