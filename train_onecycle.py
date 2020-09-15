@@ -46,6 +46,7 @@ ap.add_argument("--exp-rt",action='store_true', help="use exp-rt to see lr range
 ap.add_argument('--optimizer',type=str,default='sgd',
                     help='different optimizers')
 ap.add_argument('--max-lr',default=1,type=float)
+ap.add_argument('--pct-start',default=0.3,type=float)
 ap.add_argument('--div-factor',default=25,type=float)
 ap.add_argument('--final-div',default=10000,type=float)
 
@@ -155,7 +156,7 @@ def train(max_length, model_size,
         lr_scheduler = optim.lr_scheduler.LambdaLR(optimizer,lrs)
     elif args.onecycle:
         lr_scheduler = optim.lr_scheduler.OneCycleLR(optimizer,args.learning_rate,steps_per_epoch=len(tqdm(train)),
-                                                   epochs=args.epochs)
+                                                   epochs=args.epochs,div_factor=args.div_factor,final_div_factor=args.final_div,pct_start=args.pct_start)
 
     for i in range(epochs):
         loss_sum = 0.0
