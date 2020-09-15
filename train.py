@@ -3,6 +3,7 @@ from torch import optim
 from torch import nn
 from dataloader import get_imdb
 from model import Net
+import datetime
 import json
 
 try:
@@ -94,7 +95,7 @@ if __name__ == "__main__":
     ap.add_argument("--model_size",default=128,type=int,help="Hidden size for all \
                                                                     hidden layers of the model")
     
-    ap.add_argument("--epochs",default=1000,type=int,help="Number of epochs to train for")
+    ap.add_argument("--epochs",default=50,type=int,help="Number of epochs to train for")
 
     ap.add_argument("--learning_rate",default=0.001,type=float,dest="learning_rate",help="Learning rate for optimizer")
 
@@ -113,6 +114,6 @@ if __name__ == "__main__":
 
     train(**args)
 
-    json.dump(vacc,open('original.json','w+'))
+    json.dump(vacc,open('original_{}.json'.format(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')),'w+'))
 
 

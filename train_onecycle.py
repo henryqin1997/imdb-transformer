@@ -187,9 +187,9 @@ if __name__ == "__main__":
 
     postfix = '_exp-rt.json' if args.exp_rt else ('onecycle.json' if args.onecycle else '.json')
     if args.exp_rt:
-        json.dump(loss_list,open('imdb_lamb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix,'w+'))
+        json.dump(loss_list,open('imdb_{}_batch{}_lr{}_epoch{}'.format(args.optimizer,args.batch_size,args.learning_rate,args.epochs)+ postfix,'w+'))
     else:
         json.dump([tacc,vacc],
-                  open('imdb_labm_batch{}_lr{}_epoch{}'.format(args.batch_size, args.learning_rate, args.epochs) + postfix,
+                  open('imdb_{}_batch{}_lr{}_epoch{}'.format(args.optimizer,args.batch_size, args.learning_rate, args.epochs) + postfix,
                        'w+'))
 
