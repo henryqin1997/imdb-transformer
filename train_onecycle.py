@@ -34,9 +34,20 @@ ap.add_argument("--dropout", default=0.1, type=float, dest="dropout", help="Drop
 ap.add_argument("--train_word_embeddings", type=bool, default=True, dest="train_word_embeddings",
                 help="Train GloVE word embeddings")
 
+ap.add_argument('--momentum', type=float, default=0.9, metavar='M',
+                    help='SGD momentum (default: 0.9)')
+ap.add_argument('--weight-decay', type=float, default=5e-4, metavar='W',
+                    help='SGD weight decay (default: 5e-4)')
+
 ap.add_argument("--batch_size", type=int, default=128, help="Batch size")
 
 ap.add_argument("--exp-rt",action='store_true', help="use exp-rt to see lr range")
+
+ap.add_argument('--optimizer',type=str,default='sgd',
+                    help='different optimizers')
+ap.add_argument('--max-lr',default=1,type=float)
+ap.add_argument('--div-factor',default=25,type=float)
+ap.add_argument('--final-div',default=10000,type=float)
 
 ap.add_argument("--onecycle",action='store_true')
 
@@ -110,8 +121,29 @@ def train(max_length, model_size,
         train_word_embeddings=train_word_embeddings,
     ).to(device)
 
-    # optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
-    optimizer = Lamb((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
+    # optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=learning_rate,weight_decay=1e-4)
+    if args.optimizer.lower() == 'sgd':
+        optimizer = optim.SGD((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, weight_decay=args.weight_decay)
+    if args.optimizer.lower() == 'sgdwm':
+        optimizer = optim.SGD((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, momentum=args.momentum,
+                              weight_decay=args.weight_decay)
+    elif args.optimizer.lower() == 'adam':
+        optimizer = torch.optim.Adam((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate,
+                                     weight_decay=args.weight_decay)
+    elif args.optimizer.lower() == 'rmsprop':
+        optimizer = optim.RMSprop((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, momentum=args.momentum,
+                                  weight_decay=args.weight_decay)
+    elif args.optimizer.lower() == 'adagrad':
+        optimizer = optim.Adagrad((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, weight_decay=args.weight_decay)
+    elif args.optimizer.lower() == 'lamb':
+        from lamb import Lamb
+        optimizer = Lamb((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, weight_decay=args.weight_decay)
+    elif args.optimizer.lower() == 'novograd':
+        from novograd import NovoGrad
+        optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, weight_decay=args.weight_decay)
+    else:
+        optimizer = optim.SGD((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate, momentum=args.momentum,
+                              weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
     def lrs(batch):
