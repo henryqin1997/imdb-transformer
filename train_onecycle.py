@@ -5,6 +5,7 @@ from dataloader import get_imdb
 from novograd import NovoGrad
 import math
 from model import Net
+from lamb import Lamb
 import argparse
 import json
 
@@ -109,7 +110,8 @@ def train(max_length, model_size,
         train_word_embeddings=train_word_embeddings,
     ).to(device)
 
-    optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
+    # optimizer = NovoGrad((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
+    optimizer = Lamb((p for p in model.parameters() if p.requires_grad), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
 
     def lrs(batch):
@@ -152,9 +154,9 @@ if __name__ == "__main__":
 
     postfix = '_exp-rt.json' if args.exp_rt else ('onecycle.json' if args.onecycle else '.json')
     if args.exp_rt:
-        json.dump(loss_list,open('imdb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix,'w+'))
+        json.dump(loss_list,open('imdb_lamb_batch{}_lr{}_epoch{}'.format(args.batch_size,args.learning_rate,args.epochs)+ postfix,'w+'))
     else:
-        json.dump([loss_list,tacc,vacc],
-                  open('imdb_batch{}_lr{}_epoch{}'.format(args.batch_size, args.learning_rate, args.epochs) + postfix,
+        json.dump([tacc,vacc],
+                  open('imdb_labm_batch{}_lr{}_epoch{}'.format(args.batch_size, args.learning_rate, args.epochs) + postfix,
                        'w+'))
 
