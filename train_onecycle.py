@@ -54,7 +54,7 @@ ap.add_argument("--onecycle",action='store_true')
 
 args = ap.parse_args()
 
-arg_pass = vars(args)
+# arg_pass = vars(args)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -109,7 +109,7 @@ def train(max_length, model_size,
           epochs, learning_rate,
           num_heads, num_blocks,
           dropout, train_word_embeddings,
-          batch_size,exp_rt,onecycle):
+          batch_size,exp_rt):
     """
         Trains the classifier on the IMDB sentiment dataset
     """
@@ -183,7 +183,7 @@ def train(max_length, model_size,
 
 
 if __name__ == "__main__":
-    train(**arg_pass)
+    train(args.max_length,args.model_size,args.epochs,args.learning_rate,args.num_heads,args.num_blocks,args.dropout,args.train_word_embeddings,args.batch_size,args.exp_rt)
 
     postfix = '_exp-rt.json' if args.exp_rt else ('onecycle.json' if args.onecycle else '.json')
     if args.exp_rt:
