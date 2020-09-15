@@ -3,8 +3,8 @@ import json
 import math
 
 # tacc = json.load(open('imdb_batch128_lr1.0_epoch5_exp-rt.json'))
-tacc = json.load(open('imdb_lamb_batch128_lr1.0_epoch5_exp-rt.json'))
-
+# tacc = json.load(open('imdb_lamb_batch128_lr1.0_epoch5_exp-rt.json'))
+tacc = json.load(open('imdb_adam_batch128_lr1.0_epoch5_exp-rt.json'))
 low = math.log2(1e-5)
 high = math.log2(10)
 log_neg_one = math.log2(0.1)
