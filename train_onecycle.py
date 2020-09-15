@@ -160,11 +160,15 @@ def train(max_length, model_size,
 
     for i in range(epochs):
         loss_sum = 0.0
+        correct = 0.0
+        total = 0.0
         model.train()
         for j, b in enumerate(iter(tqdm(train))):
             print(j)
             optimizer.zero_grad()
             model_out = model(b.text[0].to(device))
+            correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
+            total += b.label.size(0)
             loss = criterion(model_out, b.label.to(device))
             loss.backward()
             optimizer.step()
@@ -175,7 +179,7 @@ def train(max_length, model_size,
             loss_sum += loss.item()
             loss_list.append(loss.item())
         print("Epoch: {}, Loss mean: {}\n".format(i, j, loss_sum / j))
-        tacc.append(loss_sum/j)
+        tacc.append(correct/total)
 
         # Validate on test-set every epoch
         if not exp_rt:
