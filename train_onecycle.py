@@ -98,9 +98,10 @@ def val(model, test, vocab, device):
             if not vis is None and i == 0:
                 visdom_windows = plot_weights(model, visdom_windows, b, vocab, vis)
 
-            model_out = model(b.text[0].to(device)).to("cpu").numpy()
-            correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
-            total += b.label.size(0)
+            model_out = model(b.text[0].to(device))
+            _, predicted = model_out.max(1)
+            correct += predicted.eq(b.label.to(device)).sum().item()
+            total += b.text[0].size(0)
         print("{}%, {}/{}".format(correct / total, correct, total))
         vacc.append(correct/total)
 

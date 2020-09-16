@@ -95,7 +95,7 @@ if __name__ == "__main__":
     ap.add_argument("--model_size",default=128,type=int,help="Hidden size for all \
                                                                     hidden layers of the model")
     
-    ap.add_argument("--epochs",default=50,type=int,help="Number of epochs to train for")
+    ap.add_argument("--epochs",default=20,type=int,help="Number of epochs to train for")
 
     ap.add_argument("--learning_rate",default=0.001,type=float,dest="learning_rate",help="Learning rate for optimizer")
 
